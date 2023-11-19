@@ -1,5 +1,7 @@
+import 'package:bimestral_2/pages/pg_02.dart';
 import 'package:flutter/material.dart';
 import '../pages/pg_01.dart';
+import '../pages/pg_02.dart';
 
 
 
@@ -11,7 +13,8 @@ class RouteGenerator {
     switch (settings.name) {
       case initialRoute:
         return MaterialPageRoute(builder: (_) => LoginPage());
-      
+       case '/cadastro':
+        return MaterialPageRoute(builder: (_) => Cadastro());
 
 
 
