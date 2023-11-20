@@ -23,8 +23,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'bimestral_2',
-      initialRoute: RouteGenerator.initialRoute,
-      onGenerateRoute: RouteGenerator.generateRoute,
+
+      initialRoute: AppRoutes.autenticaoDeUsuarioScreen ,
+      routes: AppRoutes.routes,
+
+
     );
   }
 }

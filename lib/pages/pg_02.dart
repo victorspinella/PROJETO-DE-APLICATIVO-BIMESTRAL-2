@@ -1,58 +1,101 @@
 import 'package:flutter/material.dart';
-import '../service/service_file.dart';
-import '../router/app_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:bimestral_2/core/app_export.dart';
 
 class Cadastro extends StatelessWidget {
 
-  final TextEditingController nomeController = TextEditingController();
+  final TextEditingController nomeController  = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController senhaController = TextEditingController();
 
   AuthService _autentificacaoservico = AuthService();
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null,
-      
+
+
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Stack(
+            
             children: <Widget>[
-              Image.asset(
-                'assets/imagens/fundo01.png',
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity,
-              ),
+
+
+              
+
+
+
               Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
+
                   children: <Widget>[
+
                     Text(
                       'Inscreva-se',
                       style: TextStyle(
                         fontSize: 24.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: const Color.fromARGB(255, 207, 137, 137),
                       ),
                     ),
-                    Text(
-                      'Inscreva-se agora e comece a meditar e explore o Medic',
-                      style: TextStyle(
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                    
+
+                   SizedBox(height: 20.0),
+                   TextField(
+                   controller: nomeController, 
+                   style: CustomTextStyles.bodyMediumLight,
+                   decoration: InputDecoration(
+                   labelText: "nome",
+                   filled: true,
+                   fillColor: appTheme.gray3007f,
+                   contentPadding: EdgeInsets.all(12.0),
+                   border: OutlineInputBorder(
+                   borderRadius: BorderRadius.circular(8.0),
+                     ),
                     ),
-                    SizedBox(height: 20.0),
-                    buildTextField('Nome', 'E-mail', 'Senha'),
-                    SizedBox(height: 20.0),
-                    buildElevatedButton('Cadastrar', context),
+                  ),
+
+                   SizedBox(height: 20.0),
+                   TextField(
+                   controller: emailController,
+                   style: CustomTextStyles.bodyMediumLight,
+                   decoration: InputDecoration(
+                   labelText: "email",
+                   filled: true,
+                   fillColor: appTheme.gray3007f,
+                   contentPadding: EdgeInsets.all(12.0),
+                   border: OutlineInputBorder(
+                   borderRadius: BorderRadius.circular(8.0),
+                     ),
+                    ),
+                  ),
+                   SizedBox(height: 20.0),
+                   TextField(
+                   controller: senhaController,
+                   style: CustomTextStyles.bodyMediumLight,
+                   decoration: InputDecoration(
+                   labelText: "senha",
+                   filled: true,
+                   fillColor: appTheme.gray3007f,
+                   contentPadding: EdgeInsets.all(12.0),
+                   border: OutlineInputBorder(
+                   borderRadius: BorderRadius.circular(8.0),
+                     ),
+                    ),
+                  ),
+
+
+                 SizedBox(height: 20.0),
+                 buildElevatedButton('Cadastrar', context),
+                  
+                  
+
+
+
                   ],
                 ),
               ),
@@ -63,104 +106,38 @@ class Cadastro extends StatelessWidget {
     );
   }
 
-  Widget buildTextField(String labelText, String hintText, String labelTextPassword) {
-    return Column(
-      children: [
-        TextField(
-          controller: nomeController,
-          decoration: InputDecoration(
-            labelText: labelText,
-            hintText: 'nome',
-            labelStyle: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-        ),
-        SizedBox(height: 10.0),
-        TextField(
-          controller: senhaController,
-          obscureText: true,
-          decoration: InputDecoration(
-            labelText: labelTextPassword,
-            hintText: 'Senha',
-            labelStyle: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-        ),
-        SizedBox(height: 10.0),
-        TextField(
-          controller: emailController,
-          decoration: InputDecoration(
-            labelText: labelText,
-            hintText: 'E-mail',
-            labelStyle: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+ Widget buildElevatedButton(String text, BuildContext context) {
+  return ElevatedButton(
 
-  Widget buildElevatedButton(String text, BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-     // Obter os valores dos campos de texto
+    onPressed: ()  async{
+   
 
-      String nome =  nomeController.text;
-      String email = emailController.text;
-      String senha = senhaController.text;
+    String nome =  nomeController.text;
+    String email = emailController.text;
+    String senha = senhaController.text;
 
       print('Nome: $nome');
       print('Email: $email');
-      print('Senha: $senha');
+      print('Senha: $senha'); 
 
-       // Verificar se os campos estão preenchidos
-      if (nome.isEmpty || email.isEmpty || senha.isEmpty) {
+     if (nome.isEmpty || email.isEmpty || senha.isEmpty) {
         // Exibir uma mensagem de erro (pode ser uma SnackBar, AlertDialog, etc.)
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Erro'),
-              content: Text('Por favor, preencha todos os campos.'),
-              actions: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-       
+        mostrarSnackBar(context: context, texto: "Campos nao preenchidos ");
       } else {
 
-
-        _autentificacaoservico.cadastrousuario(nome: nome, email: email, senha: senha);
-        
-
-        //Navegar para a próxima tela
-       Navigator.pushReplacementNamed(context, RouteGenerator.initialRoute);
+            //  mostrarSnackBar(context: context, texto: " preenchidos ");
+              _autentificacaoservico.cadastrousuario(nome: nome, email: email, senha: senha);
+       
       }
+        //Navegar para a próxima tela
+     // Navigator.pushReplacementNamed(context, RouteGenerator.initialRoute);
+    
+    
+
+   
     },
+    child: Text(text),
+  );
+}
 
-
-
-      //  Navigator.pushReplacementNamed(context, RouteGenerator.initialRoute);
-      
-      style: ElevatedButton.styleFrom(
-        primary: Color(0xFF729899),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: Colors.white,
-        ),
-      ),
-    );
-  }
 }
