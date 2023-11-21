@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bimestral_2/core/app_export.dart';
 
 class Cadastro extends StatelessWidget {
@@ -13,19 +12,10 @@ class Cadastro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Stack(
-            
             children: <Widget>[
-
-
-              
-
-
-
               Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Column(
@@ -91,7 +81,32 @@ class Cadastro extends StatelessWidget {
 
                  SizedBox(height: 20.0),
                  buildElevatedButton('Cadastrar', context),
-                  
+
+
+
+                 SizedBox(height: 31.v),
+                 Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                     TextButton(
+                       onPressed: () {
+                       onTapFazerVoltar(context);
+                         },
+                       style: TextButton.styleFrom(
+                       padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 8.v),
+                       backgroundColor: Colors.transparent,
+                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                       ),
+                          child: Padding(
+                          padding: EdgeInsets.only(bottom: 1.v),
+                          child: Text(
+                            "voltar",
+                          style: CustomTextStyles.bodyMediumLight14,
+                           ),
+                           ),
+                          ),
+                     ],
+                   ) ,             
                   
 
 
@@ -112,9 +127,9 @@ class Cadastro extends StatelessWidget {
     onPressed: ()  async{
    
 
-    String nome =  nomeController.text;
-    String email = emailController.text;
-    String senha = senhaController.text;
+      String nome =  nomeController.text;
+      String email = emailController.text;
+      String senha = senhaController.text;
 
       print('Nome: $nome');
       print('Email: $email');
@@ -129,15 +144,15 @@ class Cadastro extends StatelessWidget {
               _autentificacaoservico.cadastrousuario(nome: nome, email: email, senha: senha);
        
       }
-        //Navegar para a próxima tela
-     // Navigator.pushReplacementNamed(context, RouteGenerator.initialRoute);
-    
-    
-
    
     },
     child: Text(text),
   );
 }
+
+///navegacao da teça  'cadastro' quando a ação é acionada
+    onTapFazerVoltar(BuildContext context) {
+    Navigator.pushNamed(context, AppRoutes.autenticaoDeUsuarioScreen);
+  }
 
 }

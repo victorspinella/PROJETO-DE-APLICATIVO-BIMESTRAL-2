@@ -3,7 +3,13 @@ import 'package:bimestral_2/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+   LoginPage({Key? key}) : super(key: key);
+ 
+
+
+  final AuthService _lg = AuthService();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController senhaController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +29,7 @@ class LoginPage extends StatelessWidget {
 
                       SizedBox(height: 20.0),
 TextField(
+  controller: emailController, 
   style: CustomTextStyles.bodyMediumLight,
   decoration: InputDecoration(
     labelText: "Informe seu e-mail",
@@ -39,6 +46,7 @@ TextField(
 
                       SizedBox(height: 20.0),
 TextField(
+   controller:senhaController , 
   obscureText: true, // Para ocultar a senha
   style: CustomTextStyles.bodyMediumLight,
   decoration: InputDecoration(
@@ -60,9 +68,23 @@ SizedBox(height: 45.0),
                       CustomElevatedButton(
                           width: 157.h,
                           text: "Fazer login",
-                          onPressed: () {
+                          onPressed: () async {
 
-                            onTapFazerLogin(context);
+                            
+                            String email = emailController.text;
+                            String senha = senhaController.text;
+
+                            String? errorMessage = await _lg.login(
+                            email: email,
+                            senha: senha,
+                            );
+
+                          if (errorMessage == null) {
+                           Navigator.pushNamed(context, AppRoutes.compra);
+                          } else {
+                            // Autenticação falhou, exibir a mensagem de erro
+                            print(errorMessage);
+                           }
 
                           }),
 
@@ -88,6 +110,7 @@ Row(
         ),
       ),
     ),
+
     TextButton(
       onPressed: () {
         // Adicione aqui a lógica para o botão "Esqueceu sua senha?"
