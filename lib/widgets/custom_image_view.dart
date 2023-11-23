@@ -159,3 +159,6 @@ extension ImageTypeExtension on String {
 }
 
 enum ImageType { svg, png, network, file, unknown }
+
+
+

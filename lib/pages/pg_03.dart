@@ -2,8 +2,27 @@ import 'package:bimestral_2/core/app_export.dart';
 import 'package:bimestral_2/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 
-class Compra extends StatelessWidget {
+class Compra extends StatefulWidget {
   const Compra({Key? key}) : super(key: key);
+ @override
+  _CompraState createState() => _CompraState();
+}
+class _CompraState extends State<Compra> {
+  int _counter = 0;
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  void _decrementCounter() {
+    setState(() {
+      if (_counter > 0) {
+        _counter--;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,66 +58,39 @@ class Compra extends StatelessWidget {
                   SizedBox(height: 5.v),
                   Text("Valor da rifa R 60,00",
                       style: theme.textTheme.bodyMedium),
-                  SizedBox(height: 87.v),
-                  Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 27.h),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomElevatedButton(
-                                height: 40.v,
-                                width: 115.h,
-                                text: "04",
-                                margin: EdgeInsets.only(bottom: 4.v),
-                                buttonStyle: CustomButtonStyles.fillGrayF,
-                                buttonTextStyle:
-                                    CustomTextStyles.titleMediumBlack900),
-                            SizedBox(
-                                height: 44.v,
-                                width: 40.h,
-                                child: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      Align(
-                                          alignment: Alignment.topCenter,
-                                          child: Container(
-                                              height: 40.adaptSize,
-                                              width: 40.adaptSize,
-                                              decoration: BoxDecoration(
-                                                  color:
-                                                      appTheme.blueGray100))),
-                                      Align(
-                                          alignment: Alignment.center,
-                                          child: Text("+",
-                                              style:
-                                                  theme.textTheme.displaySmall))
-                                    ])),
-                            Container(
-                                height: 44.v,
-                                width: 40.h,
-                                margin: EdgeInsets.only(left: 1.h),
-                                child: Stack(
-                                    alignment: Alignment.centerLeft,
-                                    children: [
-                                      Align(
-                                          alignment: Alignment.topCenter,
-                                          child: Container(
-                                              height: 40.adaptSize,
-                                              width: 40.adaptSize,
-                                              decoration: BoxDecoration(
-                                                  color:
-                                                      appTheme.blueGray100))),
-                                      Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 10.h),
-                                              child: Text("-",
-                                                  style: theme
-                                                      .textTheme.displaySmall)))
-                                    ]))
-                          ])),
-                  Spacer(),
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            Column(     
+           children: <Widget>[
+            Text(
+              'Contador:',
+            ),
+
+
+            Text(
+              '$_counter',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ElevatedButton(
+                  onPressed: _incrementCounter,
+                  child: Icon(Icons.add),
+                ),
+                SizedBox(width: 20), // Espaço entre os botões
+                ElevatedButton(
+                  onPressed: _decrementCounter,
+                  child: Icon(Icons.remove),
+                ),
+              ],
+            ),
+          ],
+         ),
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
                   SizedBox(height: 79.v),
                   CustomElevatedButton(
                       text: "Confirmar Compra",
@@ -109,8 +101,10 @@ class Compra extends StatelessWidget {
                 ]))));
   }
 
+
   /// Navigates to the telaDeConfirmacaoScreen when the action is triggered.
   onTapConfirmarCompra(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.compra);
+    Navigator.pushNamed(context, AppRoutes.gerapremio);
+    
   }
 }

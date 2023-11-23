@@ -2,6 +2,7 @@ import 'package:bimestral_2/core/app_export.dart';
 import 'package:bimestral_2/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 
+
 class LoginPage extends StatelessWidget {
    LoginPage({Key? key}) : super(key: key);
  
@@ -113,7 +114,11 @@ Row(
 
     TextButton(
       onPressed: () {
-        // Adicione aqui a lógica para o botão "Esqueceu sua senha?"
+       
+      //   _lg.gerarCotas();
+
+        Navigator.pushNamed(context, AppRoutes.compra);
+       
       },
       style: TextButton.styleFrom(
         padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 8.v),
@@ -135,8 +140,14 @@ Row(
     onTapFazerLogin(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.compra);
   }
-  onTapFazerCadastro(BuildContext context) {
+   onTapFazerCadastro(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.cadastro);
 
 }
+
+
 }
+
+
+
+
