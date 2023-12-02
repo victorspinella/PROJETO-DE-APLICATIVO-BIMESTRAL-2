@@ -1,19 +1,10 @@
-import 'dart:typed_data';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 import 'dart:io';
-import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-
-
-
-
 
 
 class AuthService {
@@ -121,63 +112,9 @@ pickeruploadimagem() async {
       print('Falha no upload da imagem');
     }
   } else { 
-    print('nao deu ');
+    print('falha pickeruploadimagem');
   }
 }
-
-/////////////////////////////////////////////////////////////////////////////////////////
-
-
-Future<String?> redimensionarImagem({ 
-required String caminhoDaImagem,
-}) async {
-
-  try {
-    int largura = 100 ;
-    int altura = 100 ;
-    File imagemOriginal = File(caminhoDaImagem);
-
-    // Lê a imagem original
-    print('Caminho da imagem original: ${imagemOriginal.path}');
-
-    if (await imagemOriginal.exists()) {
-      print('O arquivo existe.');
-    } else {
-      print('O arquivo NÃO existe.');
-    }
-
-    List<int> bytes = await imagemOriginal.readAsBytes();
-
-    print('Eu tento redimensionar...');
-    img.Image imagem = img.decodeImage(Uint8List.fromList(bytes))!;
-    print('Tentativa de redimensionamento concluída.');
-
-    // Redimensiona a imagem
-    img.Image imagemRedimensionada = img.copyResize(imagem, width: largura, height: altura);
-
-    // Obtém o diretório temporário para salvar a nova imagem
-    Directory tempDir = await getTemporaryDirectory();
-    String tempPath = tempDir.path;
-
-    // Gera um nome de arquivo único baseado no timestamp
-    String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-    String nomeArquivo = 'imagem_$timestamp.jpg';
-
-    // Cria um novo arquivo para a imagem redimensionada
-    File imagemRedimensionadaFile = File('$tempPath/$nomeArquivo');
-
-    // Salva a imagem redimensionada no novo arquivo
-    await imagemRedimensionadaFile.writeAsBytes(Uint8List.fromList(img.encodeJpg(imagemRedimensionada)));
-
-    return imagemRedimensionadaFile.path;
-  } catch (e) {
-    print('Erro ao redimensionar a imagem: $e');
-    throw e;
-  }
-}
-
-
-
 ///////////////////////////////////////////////////////////////////
 
 
