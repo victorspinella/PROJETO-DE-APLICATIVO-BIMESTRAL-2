@@ -96,15 +96,13 @@ class _CompraState extends State<Compra> {
                       text: "Confirmar Compra",
                       margin: EdgeInsets.only(left: 28.h, right: 26.h),
                       onPressed: () {
-                        onTapConfirmarCompra(context);
+                        
+
                       })
                 ]))));
   }
 
 
   /// Navigates to the telaDeConfirmacaoScreen when the action is triggered.
-  onTapConfirmarCompra(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.gerapremio);
-    
-  }
+  
 }

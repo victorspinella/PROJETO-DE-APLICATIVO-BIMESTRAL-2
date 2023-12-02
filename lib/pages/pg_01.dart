@@ -81,7 +81,7 @@ SizedBox(height: 45.0),
                             );
 
                           if (errorMessage == null) {
-                           Navigator.pushNamed(context, AppRoutes.compra);
+                          onTapPremio(context);
                           } else {
                             // Autenticação falhou, exibir a mensagem de erro
                             print(errorMessage);
@@ -115,10 +115,7 @@ Row(
     TextButton(
       onPressed: () {
        
-      //   _lg.gerarCotas();
-
-        Navigator.pushNamed(context, AppRoutes.compra);
-       
+     
       },
       style: TextButton.styleFrom(
         padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 8.v),
@@ -137,11 +134,12 @@ Row(
   }
 
   /// Navigates to the telaInicialScreen when the action is triggered.
-    onTapFazerLogin(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.compra);
-  }
+  
    onTapFazerCadastro(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.cadastro);
+ }
+   onTapPremio(BuildContext context){
+    Navigator.pushNamed(context, AppRoutes.telaPremio);
 
 }
 

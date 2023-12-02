@@ -1,5 +1,12 @@
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:bimestral_2/core/app_export.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart';
+import 'dart:io';
+
 
 class CriaPremio extends StatefulWidget {
   CriaPremio({Key? key}) : super(key: key);
@@ -9,12 +16,18 @@ class CriaPremio extends StatefulWidget {
 }
 
 class _CriaPremioState extends State<CriaPremio> {
+  
   final AuthService _gerarCotas = AuthService();
   final TextEditingController nomeController = TextEditingController();
   final TextEditingController imagemController = TextEditingController();
   final TextEditingController valorController = TextEditingController();
   final TextEditingController valorcotaController = TextEditingController();
   final TextEditingController quantidadeController = TextEditingController();
+
+  final FirebaseApp app = Firebase.app();
+  
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +44,21 @@ class _CriaPremioState extends State<CriaPremio> {
               controller: nomeController,
               decoration: InputDecoration(labelText: 'Nome do Prêmio'),
             ),
+          
             TextField(
-              controller: imagemController,
+               controller: imagemController,
               decoration: InputDecoration(labelText: 'URL da Imagem do Prêmio'),
             ),
+              ElevatedButton(
+  onPressed: () async {
+     String imageUrl = await _gerarCotas.pickeruploadimagem();
+    if (imageUrl.isNotEmpty) {
+      imagemController.text = imageUrl;
+    }
+  },
+             
+  child: Text('Selecionar Imagem'),
+),
             TextField(
               controller: valorController,
               decoration: InputDecoration(labelText: 'Valor do Prêmio'),
@@ -53,7 +77,9 @@ class _CriaPremioState extends State<CriaPremio> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                _gerarCotas.gerarCotas(
+
+                  
+                   _gerarCotas.gerarCotas(
 
                   nomePremio: nomeController.text,
                   imagem: imagemController.text,

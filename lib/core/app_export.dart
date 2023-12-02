@@ -11,5 +11,5 @@ export 'package:bimestral_2/core/utils/date_time_utils.dart';
 export 'package:bimestral_2/router/app_router.dart';
 export 'package:bimestral_2/_comum/snackbar.dart';
 export 'package:bimestral_2/service/service_file.dart';
-
+export 'package:bimestral_2/service/servive_Premio.dart';
 

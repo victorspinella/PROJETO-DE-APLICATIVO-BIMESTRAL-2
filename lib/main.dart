@@ -4,14 +4,22 @@ import './router/app_router.dart';
 import './gerenciamento_de_estado/sua_classe_provider.dart'; // Importe o seu provider
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+ 
+
 
 
 void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {
+    print('Erro ao inicializar o Firebase: $e');
+  }
+
   runApp(
    
     ChangeNotifierProvider(
@@ -33,6 +41,7 @@ class MyApp extends StatelessWidget {
 
     );
   }
+  
 }
 
 
