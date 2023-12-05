@@ -26,7 +26,10 @@ class Premio {
         String status = value['status'];
 
         if (status == 'ativo') {
+           String premioid = key;
           premiosAtivos.add({
+             
+            'premioid': premioid,
             'nome': value['nome'] ?? 'Sem nome',
             'imagem': value['imagem'] ?? 'Sem imagem',
             'valor': value['valor'] ?? 0.0,
@@ -38,4 +41,14 @@ class Premio {
 
     return premiosAtivos;
   }
+}
+
+class PremioData {
+
+  final String premioid ;
+  final String nome;
+  final double valor;
+  final String imagem;
+ 
+  PremioData({required this.premioid,required this.nome,required this.valor,required this.imagem});
 }

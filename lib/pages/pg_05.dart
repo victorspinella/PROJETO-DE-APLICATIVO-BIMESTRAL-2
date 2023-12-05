@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class TelaPremio extends StatelessWidget {
   final Premio _premio = Premio();
+  
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +43,7 @@ class TelaPremio extends StatelessWidget {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 Map<String, dynamic> premio = snapshot.data![index];
+                print(premio);
                 return buildPremioCard(context, premio);
               },
             );
@@ -65,7 +67,9 @@ class TelaPremio extends StatelessWidget {
         title: Text(premio['nome'] ?? 'Sem nome'),
         subtitle: Text('Valor: \$${premio['valor']}'),
         onTap: () {
-          onTapFazerLogin(context);
+          
+
+        onTapComprarPremio(context,premio);
         },
       ),
     );
@@ -91,10 +95,19 @@ class TelaPremio extends StatelessWidget {
   );
 }
 
-  onTapFazerLogin(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.compra);
-  }
-
+ onTapComprarPremio(BuildContext context, Map<String, dynamic> premio) {
+  double valor = (premio['valor'] as num).toDouble();
+  print(premio);
+  PremioData premioData = PremioData(
+    
+      premioid: premio['premioid']??'',
+      nome: premio['nome'] ?? 'Sem nome',
+      valor: valor,
+      imagem: premio['imagem'] ?? '',
+  );
+  print(premioData);
+  Navigator.pushNamed(context, AppRoutes.compra, arguments: premioData);
+}
   onTapGerarPremio(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.gerapremio);
     

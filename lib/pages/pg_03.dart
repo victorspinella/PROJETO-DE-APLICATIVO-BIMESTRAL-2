@@ -3,12 +3,17 @@ import 'package:bimestral_2/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 
 class Compra extends StatefulWidget {
-  const Compra({Key? key}) : super(key: key);
- @override
+  Compra({Key? key}) : super(key: key);
+  final AuthService premio = AuthService();
+
+  @override
   _CompraState createState() => _CompraState();
 }
+
 class _CompraState extends State<Compra> {
   int _counter = 0;
+  PremioData? premioData;
+  List<String> _cotasEncontradas = [];
 
   void _incrementCounter() {
     setState(() {
@@ -28,81 +33,132 @@ class _CompraState extends State<Compra> {
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
     return SafeArea(
-        child: Scaffold(
-            body: Container(
-                width: double.maxFinite,
-                padding:
-                    EdgeInsets.symmetric(horizontal: 55.h, vertical: 100.v),
-                child: Column(children: [
-                  SizedBox(
-                      height: 150.v,
-                      width: 250.h,
-                      child: Stack(alignment: Alignment.center, children: [
-                        CustomImageView(
-                            imagePath: ImageConstant.imgYamahaFazerFz2520236,
-                            height: 136.v,
-                            width: 204.h,
-                            alignment: Alignment.center),
-                        Align(
-                            alignment: Alignment.center,
-                            child: Container(
-                                height: 150.v,
-                                width: 250.h,
-                                decoration: BoxDecoration(
-                                    color:
-                                        appTheme.blueGray100.withOpacity(0.3))))
-                      ])),
-                  SizedBox(height: 5.v),
-                  Text("Yamaha Fazer FZ25 2023 R 21.490,00",
-                      style: theme.textTheme.labelLarge),
-                  SizedBox(height: 5.v),
-                  Text("Valor da rifa R 60,00",
-                      style: theme.textTheme.bodyMedium),
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            Column(     
-           children: <Widget>[
-            Text(
-              'Contador:',
-            ),
-
-
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                ElevatedButton(
-                  onPressed: _incrementCounter,
-                  child: Icon(Icons.add),
+      child: Scaffold(
+        body: Container(
+          width: double.maxFinite,
+          padding: EdgeInsets.symmetric(horizontal: 55.h, vertical: 100.v),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 150.v,
+                width: 250.h,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    CustomImageView(
+                      imagePath: premioData?.imagem ?? '',
+                      height: 136.v,
+                      width: 204.h,
+                      alignment: Alignment.center,
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                        height: 150.v,
+                        width: 250.h,
+                        decoration: BoxDecoration(
+                          color: appTheme.blueGray100.withOpacity(0.3),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-                SizedBox(width: 20), // Espaço entre os botões
-                ElevatedButton(
-                  onPressed: _decrementCounter,
-                  child: Icon(Icons.remove),
+              ),
+              if (premioData != null)
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      premioData!.nome,
+                      style: theme.textTheme.labelLarge,
+                    ),
+                    Text(
+                      "R ${premioData!.valor.toStringAsFixed(2)}",
+                      style: theme.textTheme.labelLarge,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ],
-         ),
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-                  SizedBox(height: 79.v),
-                  CustomElevatedButton(
-                      text: "Confirmar Compra",
-                      margin: EdgeInsets.only(left: 28.h, right: 26.h),
-                      onPressed: () {
-                        
-
-                      })
-                ]))));
+              Column(
+                children: <Widget>[
+                  Text(
+                    'Contador:',
+                  ),
+                  Text(
+                    '$_counter',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      ElevatedButton(
+                        onPressed: _incrementCounter,
+                        child: Icon(Icons.add),
+                      ),
+                      SizedBox(width: 20),
+                      ElevatedButton(
+                        onPressed: _decrementCounter,
+                        child: Icon(Icons.remove),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              // Exibe a lista de cotas encontradas
+              SizedBox(height: 20.0),
+              Expanded(
+                child: _cotasEncontradas.isEmpty
+                    ? Text('Nenhuma cota encontrada')
+                    : SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Text(
+                          'Cotas: ${_cotasEncontradas.join(', ')}',
+                          style: TextStyle(fontSize: 16.0),
+                        ),
+                      ),
+              ),
+              CustomElevatedButton(
+                text: "Buscar cotas Disponíveis",
+                margin: EdgeInsets.only(left: 10.h, right: 8.h),
+                onPressed: () async {
+                  try {
+                       // String premioid= '1701734576541' ;
+                        print('tento ');
+                        String? premioid = premioData!.premioid ;
+                        print(premioid);
+                    
+                        List<String> cotasEncontradas =
+                        await widget.premio.buscarCotasDisponiveis(
+                        premioId:premioid,
+                        quantidadeCotas: _counter,
+                    );
+                    // Atualiza o estado com as cotas encontradas
+                    setState(() {
+                      _cotasEncontradas = cotasEncontradas;
+                    });
+                  } catch (e) {
+                    print("Erro ao buscar cotas disponíveis: $e");
+                    // Adicione qualquer tratamento de erro necessário aqui
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-  /// Navigates to the telaDeConfirmacaoScreen when the action is triggered.
-  
+    // Obtém os dados do prêmio ao iniciar a tela
+    if (premioData == null) {
+      premioData = ModalRoute.of(context)?.settings.arguments as PremioData?;
+      if (premioData != null) {
+        // Atualiza a interface do usuário se houver dados do prêmio disponíveis
+        setState(() {});
+      }
+    }
+  }
 }

@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseDatabase database = FirebaseDatabase.instance;
   //final DatabaseReference databaseReference;
  // AuthService() : databaseReference = FirebaseDatabase.instance.ref();
 
@@ -159,6 +160,42 @@ Future<void> comprarCotasAleatorias({
     } }else{  print('nao a cotas disponiveis '); }
   } else {
     print('Erro ao recuperar as cotas disponíveis');
+  }
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+Future<List<String>> buscarCotasDisponiveis({
+  required int quantidadeCotas,
+  required String premioId,
+}) async {
+  DatabaseReference premiosRef = database.reference().child('premios').child('$premioId/cotas');
+  DataSnapshot snapshot = await premiosRef.orderByChild('status').equalTo('disponivel').get();
+
+  print('Tentativa de busca 1');
+  
+  if (snapshot.value is Map<dynamic, dynamic>) {
+    print('Tentativa de busca 2');
+
+    Map<dynamic, dynamic>? cotasDisponiveis = snapshot.value as Map<dynamic, dynamic>?;
+
+    if (cotasDisponiveis != null) {
+      List<String> cotasParaComprar = [
+        for (var entry in cotasDisponiveis.entries)
+          if (entry.value['status'] == 'disponivel') entry.key.toString()
+      ];
+
+      cotasParaComprar.shuffle();
+
+      cotasParaComprar = cotasParaComprar.take(quantidadeCotas).toList();
+
+      return cotasParaComprar;
+    } else {
+      print('Não há cotas disponíveis para o premioId $premioId');
+      return [];
+    }
+  } else {
+    print('Erro ao recuperar as cotas disponíveis');
+    return [];
   }
 }
 
