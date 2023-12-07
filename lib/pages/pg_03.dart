@@ -1,6 +1,8 @@
 import 'package:bimestral_2/core/app_export.dart';
 import 'package:bimestral_2/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
+import 'package:bimestral_2/pages/ConfirmacaoCompraPage.dart';
+
 
 class Compra extends StatefulWidget {
   Compra({Key? key}) : super(key: key);
@@ -121,15 +123,15 @@ class _CompraState extends State<Compra> {
                 margin: EdgeInsets.only(left: 10.h, right: 8.h),
                 onPressed: () async {
                   try {
-                       // String premioid= '1701734576541' ;
-                        print('tento ');
-                        String? premioid = premioData!.premioid ;
-                        print(premioid);
-                    
-                        List<String> cotasEncontradas =
+                    // String premioid= '1701734576541' ;
+                    print('tento ');
+                    String? premioid = premioData!.premioid;
+                    print(premioid);
+
+                    List<String> cotasEncontradas =
                         await widget.premio.buscarCotasDisponiveis(
-                        premioId:premioid,
-                        quantidadeCotas: _counter,
+                      premioId: premioid,
+                      quantidadeCotas: _counter,
                     );
                     // Atualiza o estado com as cotas encontradas
                     setState(() {
@@ -139,6 +141,18 @@ class _CompraState extends State<Compra> {
                     print("Erro ao buscar cotas disponíveis: $e");
                     // Adicione qualquer tratamento de erro necessário aqui
                   }
+                },
+              ),
+              CustomElevatedButton(
+                text: "Confirmar Compra",
+                margin: EdgeInsets.only(left: 10.h, right: 8.h),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ConfirmacaoCompraPage(),
+                    ),
+                  );
                 },
               ),
             ],
